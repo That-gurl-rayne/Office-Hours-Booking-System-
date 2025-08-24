@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Appointment Booking | LCU</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c2461, #1e3799);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .course-info {
+            flex: 1;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            color: #0c2461;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .course-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .hod-info {
+            background: #e3f2fd;
+            border-left: 4px solid #1e88e5;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 10px;
+        }
+        
+        .hod-contact {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .hod-contact span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+            margin-bottom: 25px;
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #0c2461;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1e88e5;
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #0c2461, #1e3799);
+            color: white;
+            border: none;
+            padding: 16px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(12, 36, 97, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(12, 36, 97, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .booking-code {
+            background: linear-gradient(135deg, #0c2461, #1e3799);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+        
+        .code-value {
+            font-family: monospace;
+            font-size: 2.2rem;
+            letter-spacing: 3px;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            word-break: break-all;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+            flex: 1;
+        }
+        
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        
+        .confirmation {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .check-icon {
+            font-size: 4rem;
+            color: #43a047;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background: #e8f5e9;
+            border-left: 4px solid #43a047;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        
+        .instructions li {
+            margin: 10px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .specialization {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .badge {
+            background: #1e3799;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Team Section Styling */
+        .team-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .team-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #0c2461;
+            font-size: 1.5rem;
+        }
+        
+        .close-team {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .team-member {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .team-member:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .member-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .member-name {
+            font-weight: 600;
+            color: #0c2461;
+        }
+        
+        .member-role {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .member-contribution {
+            background: #f0f3f5;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .member-contribution ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+        
+        .member-contribution li {
+            margin: 5px 0;
+        }
+        
+        .team-badge {
+            background: #0c2461;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .team-footer {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-team-btn {
+            background: linear-gradient(to right, #0c2461, #1e3799);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(12, 36, 97, 0.3);
+            margin: 0 auto 20px;
+        }
+        
+        .toggle-team-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(12, 36, 97, 0.4);
+        }
+        
+        .department-group {
+            position: relative;
+        }
+        
+        .department-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0c2461;
+            pointer-events: none;
+        }
+        
+        .invalid {
+            border-color: #e74c3c !important;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2) !important;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .success-message {
+            color: #43a047;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .name-instruction {
+            background: #e3f2fd;
+            border-left: 3px solid #1e88e5;
+            padding: 12px 15px;
+            border-radius: 0 6px 6px 0;
+            margin-top: 5px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .field-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        @media (max-width: 600px) {
+            .course-header {
+                flex-direction: column;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                padding: 14px;
+            }
+            
+            .code-value {
+                font-size: 1.8rem;
+            }
+            
+            .hod-contact {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .team-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .close-team {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="course-header">
+                <div class="course-info">
+                    <h1><i class="fas fa-laptop-code"></i> LCU IT Department Appointment System</h1>
+                    <div class="course-meta">
+                        <span><strong>Course Code:</strong> LCU-COS 109</span>
+                        <span><strong>Units:</strong> 3 (Compulsory)</span>
+                        <span><strong>Course Title:</strong> Introduction to Web Computing</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hod-info">
+                <div><strong>Head of Department:</strong> Dr. Wilson Sapkere</div>
+                <div class="hod-contact">
+                    <span><i class="fas fa-envelope"></i> Sakpere.wilson@lcu.edu.ng</span>
+                    <span><i class="fas fa-phone"></i> 09137792962</span>
+                </div>
+                <div class="specialization">
+                    <span class="badge">Software Engineering</span>
+                    <span class="badge">Machine Learning</span>
+                    <span class="badge">Transformers</span>
+                    <span class="badge">LLMs</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Booking Form -->
+        <div class="card" id="bookingForm">
+            <h2 class="card-title"><i class="fas fa-calendar-plus"></i> Book Appointment</h2>
+            
+            <div class="name-instruction">
+                <strong>Identification:</strong> Please use your full name as it appears on your university records.
+            </div>
+            
+            <form id="appointmentForm">
+                <div class="form-group">
+                    <label for="name" class="required">Full Name</label>
+                    <input type="text" id="name" required placeholder="Enter your full name as registered">
+                    <div class="error-message hidden" id="nameError">
+                        <i class="fas fa-exclamation-circle"></i> Please enter your full name
+                    </div>
+                </div>
+                
+                <div class="form-group department-group">
+                    <label for="department" class="required">Department</label>
+                    <select id="department" required>
+                        <option value="" disabled selected>-- Select Department --</option>
+                        <option>Computer Science</option>
+                        <option>Information Technology</option>
+                        <option>Software Engineering</option>
+                        <option>Cybersecurity</option>
+                        <option>Data Science</option>
+                    </select>
+                    <i class="fas fa-chevron-down department-icon"></i>
+                    <div class="error-message hidden" id="departmentError">
+                        <i class="fas fa-exclamation-circle"></i> Please select your department
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reason" class="required">Reason for Appointment</label>
+                    <select id="reason" required>
+                        <option value="">-- Select Reason --</option>
+                        <option>Project Consultation</option>
+                        <option>Course Clarification</option>
+                        <option>Research Guidance</option>
+                        <option>Academic Advising</option>
+                        <option>Technical Support</option>
+                        <option>Other</option>
+                    </select>
+                    <div class="error-message hidden" id="reasonError">
+                        <i class="fas fa-exclamation-circle"></i> Please select a reason for your appointment
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="details">Additional Details</label>
+                    <textarea id="details" rows="3" placeholder="Provide specific details about your appointment..."></textarea>
+                    <span class="field-hint">Please provide any additional information that will help us prepare for your appointment</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="datetime" class="required">Preferred Date & Time</label>
+                    <input type="datetime-local" id="datetime" required>
+                    <span class="field-hint">Office hours: Monday-Friday, 8:00 AM - 5:00 PM</span>
+                    <div class="error-message hidden" id="datetimeError">
+                        <i class="fas fa-exclamation-circle"></i> Please select a date and time for your appointment
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">
+                    <i class="fas fa-paper-plane"></i> Book Appointment
+                </button>
+            </form>
+        </div>
+        
+        <!-- Confirmation Screen -->
+        <div class="card hidden" id="confirmationScreen">
+            <div class="confirmation">
+                <div class="check-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Appointment Requested Successfully!</h2>
+                <p>Your appointment has been submitted to the HOD for approval</p>
+            </div>
+            
+            <div class="booking-code">
+                <h3>YOUR BOOKING CODE</h3>
+                <div class="code-value" id="bookingCode">IT-APPT-7X9B-2025</div>
+                <p>Save this code for verification purposes</p>
+            </div>
+            
+            <div class="instructions">
+                <h4><i class="fas fa-info-circle"></i> Next Steps:</h4>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> Check your LCU email within 24 hours for confirmation</li>
+                    <li><i class="fas fa-calendar-check"></i> Your appointment is confirmed only after HOD approval</li>
+                    <li><i class="fas fa-shield-alt"></i> Present your name and booking code when attending appointment</li>
+                </ul>
+            </div>
+            
+            <div class="actions">
+                <button class="btn btn-secondary" id="newAppointment">
+                    <i class="fas fa-plus"></i> New Appointment
+                </button>
+                <button class="btn" id="copyCode">
+                    <i class="fas fa-copy"></i> Copy Code
+                </button>
+            </div>
+        </div>
+        
+        <!-- Team Section Toggle Button -->
+        <button class="toggle-team-btn" id="toggleTeamBtn">
+            <i class="fas fa-users"></i> View Development Team (6 Members)
+        </button>
+        
+        <!-- Team Section -->
+        <div class="team-section hidden" id="teamSection">
+            <div class="team-header">
+                <h3 class="team-title"><i class="fas fa-users"></i> Project Development Team (6 Members)</h3>
+                <button class="close-team" id="closeTeam">&times;</button>
+            </div>
+            
+            <p style="color: #6c757d; margin-bottom: 20px;">This appointment system was developed collaboratively by IT students as part of LCU-COS 109: Introduction to Web Computing</p>
+            
+            <div class="team-grid">
+                <!-- Taofeek Abdul-Bazeet Oluwatobi -->
+                <div class="team-member">
+                    <div class="member-header">
+                        <div>
+                            <div class="member-name">Taofeek Abdul-Bazeet Oluwatobi</div>
+                            <div class="member-role">Lead Developer</div>
+                        </div>
+                        <span class="team-badge">Team Lead</span>
+                    </div>
+                    <div class="member-contribution">
+                        <strong>Primary Contributions:</strong>
+                        <ul>
+                            <li>Designed and implemented booking code generation algorithm</li>
+                            <li>Developed JavaScript logic for form validation and submission</li>
+                            <li>Integrated clipboard functionality for booking codes</li>
+                            <li>Created the responsive confirmation screen workflow</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Olayemi Eriduwa Rebecca -->
+                <div class="team-member">
+                    <div class="member-header">
+                        <div>
+                            <div class="member-name">Olayemi Eriduwa Rebecca</div>
+                            <div class="member-role">Frontend Developer</div>
+                        </div>
+                        <span class="team-badge">UI/UX</span>
+                    </div>
+                    <div class="member-contribution">
+                        <strong>Primary Contributions:</strong>
+                        <ul>
+                            <li>Designed user interface components and layout</li>
+                            <li>Implemented responsive design for all screen sizes</li>
+                            <li>Created interactive form elements and validation</li>
+                            <li>Optimized user experience for appointment booking</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Udunna Yoanna Juochi -->
+                <div class="team-member">
+                    <div class="member-header">
+                        <div>
+                            <div class="member-name">Udunna Yoanna Juochi</div>
+                            <div class="member-role">Backend Developer</div>
+                        </div>
+                        <span class="team-badge">API</span>
+                    </div>
+                    <div class="member-contribution">
+                        <strong>Primary Contributions:</strong>
+                        <ul>
+                            <li>Developed server-side logic for appointment management</li>
+                            <li>Implemented database design and integration</li>
+                            <li>Created RESTful API endpoints for frontend communication</li>
+                            <li>Ensured data security and privacy compliance</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Coker olademeji Timileyin -->
+                <div class="team-member">
+                    <div class="member-header">
+                        <div>
+                            <div class="member-name">Coker Olademeji Timileyin</div>
+                            <div class="member-role">Database Specialist</div>
+                        </div>
+                        <span class="team-badge">DB</span>
+                    </div>
+                    <div class="member-contribution">
+                        <strong>Primary Contributions:</strong>
+                        <ul>
+                            <li>Designed and optimized database schema</li>
+                            <li>Implemented data validation and integrity checks</li>
+                            <li>Created efficient query structures for data retrieval</li>
+                            <li>Ensured database security and backup procedures</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Taiwo Toluwalase -->
+                <div class="team-member">
+                    <div class="member-header">
+                        <div>
+                            <div class="member-name">Taiwo Toluwalase</div>
+                            <div class="member-role">Testing Specialist</div>
+                        </div>
+                        <span class="team-badge">QA</span>
+                    </div>
+                    <div class="member-contribution">
+                        <strong>Primary Contributions:</strong>
+                        <ul>
+                            <li>Developed comprehensive test cases for all functionalities</li>
+                            <li>Performed cross-browser and cross-device compatibility testing</li>
+                            <li>Conducted user acceptance testing with real users</li>
+                            <li>Identified and documented bugs for resolution</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Bankole oluwaseyi Oludamilola -->
+                <div class="team-member">
+                    <div class="member-header">
+                        <div>
+                            <div class="member-name">Bankole Oluwaseyi Oludamilola</div>
+                            <div class="member-role">Documentation Lead</div>
+                        </div>
+                        <span class="team-badge">Docs</span>
+                    </div>
+                    <div class="member-contribution">
+                        <strong>Primary Contributions:</strong>
+                        <ul>
+                            <li>Created comprehensive project documentation</li>
+                            <li>Developed user guides and technical specifications</li>
+                            <li>Prepared deployment package for course submission</li>
+                            <li>Managed version control and team collaboration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="team-footer">
+                <i class="fas fa-info-circle"></i>
+                This project was developed entirely by students as part of their coursework for 
+                LCU-COS 109: Introduction to Web Computing under Dr. Wilson Sapkere.
+            </div>
+        </div>
+        
+        <footer>
+            <p>Lagos City University | Department of Information Technology</p>
+            <p>© 2025 All rights reserved | LCU-COS 109: Introduction to Web Computing</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all necessary elements
+            const form = document.getElementById('appointmentForm');
+            const bookingForm = document.getElementById('bookingForm');
+            const confirmationScreen = document.getElementById('confirmationScreen');
+            const bookingCode = document.getElementById('bookingCode');
+            const copyCodeBtn = document.getElementById('copyCode');
+            const newAppointmentBtn = document.getElementById('newAppointment');
+            const toggleTeamBtn = document.getElementById('toggleTeamBtn');
+            const teamSection = document.getElementById('teamSection');
+            const closeTeamBtn = document.getElementById('closeTeam');
+            const departmentSelect = document.getElementById('department');
+            const nameInput = document.getElementById('name');
+            const nameError = document.getElementById('nameError');
+            
+            // Generate unique booking code (8 characters)
+            function generateBookingCode() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let code = 'IT-';
+                for (let i = 0; i < 4; i++) {
+                    code += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                code += '-';
+                for (let i = 0; i < 4; i++) {
+                    code += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return code;
+            }
+            
+            // Validate name field
+            function validateName() {
+                const name = nameInput.value.trim();
+                if (name.length < 3) {
+                    nameInput.classList.add('invalid');
+                    nameError.classList.remove('hidden');
+                    return false;
+                } else {
+                    nameInput.classList.remove('invalid');
+                    nameError.classList.add('hidden');
+                    return true;
+                }
+            }
+            
+            // Validate all form fields
+            function validateForm() {
+                let isValid = true;
+                
+                // Validate name
+                if (!validateName()) {
+                    isValid = false;
+                }
+                
+                // Validate department
+                const deptError = document.getElementById('departmentError');
+                if (!departmentSelect.value) {
+                    departmentSelect.classList.add('invalid');
+                    deptError.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    departmentSelect.classList.remove('invalid');
+                    deptError.classList.add('hidden');
+                }
+                
+                // Validate reason
+                const reasonSelect = document.getElementById('reason');
+                const reasonError = document.getElementById('reasonError');
+                if (!reasonSelect.value) {
+                    reasonSelect.classList.add('invalid');
+                    reasonError.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    reasonSelect.classList.remove('invalid');
+                    reasonError.classList.add('hidden');
+                }
+                
+                // Validate datetime
+                const datetimeInput = document.getElementById('datetime');
+                const datetimeError = document.getElementById('datetimeError');
+                if (!datetimeInput.value) {
+                    datetimeInput.classList.add('invalid');
+                    datetimeError.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    datetimeInput.classList.remove('invalid');
+                    datetimeError.classList.add('hidden');
+                }
+                
+                return isValid;
+            }
+            
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    // Scroll to first error
+                    const firstError = document.querySelector('.invalid');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+                
+                // Generate booking code
+                bookingCode.textContent = generateBookingCode();
+                
+                // Show confirmation, hide form
+                bookingForm.classList.add('hidden');
+                confirmationScreen.classList.remove('hidden');
+                
+                // Scroll to top of confirmation
+                confirmationScreen.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Copy booking code functionality
+            copyCodeBtn.addEventListener('click', function() {
+                const code = bookingCode.textContent;
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Booking code copied to clipboard!');
+                });
+            });
+            
+            // New appointment button
+            newAppointmentBtn.addEventListener('click', function() {
+                form.reset();
+                document.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+                document.querySelectorAll('.error-message').forEach(el => el.classList.add('hidden'));
+                confirmationScreen.classList.add('hidden');
+                bookingForm.classList.remove('hidden');
+                bookingForm.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Toggle team section
+            toggleTeamBtn.addEventListener('click', function() {
+                teamSection.classList.remove('hidden');
+                teamSection.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Close team section
+            closeTeamBtn.addEventListener('click', function() {
+                teamSection.classList.add('hidden');
+            });
+            
+            // Set minimum date for appointment (today)
+            const datetimeInput = document.getElementById('datetime');
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            datetimeInput.min = `${year}-${month}-${day}T08:00`;
+            
+            // Real-time validation for name field
+            nameInput.addEventListener('input', validateName);
+            
+            // Remove invalid class when department is selected
+            departmentSelect.addEventListener('change', function() {
+                if (this.value) {
+                    this.classList.remove('invalid');
+                    document.getElementById('departmentError').classList.add('hidden');
+                }
+            });
+            
+            // Remove invalid class when reason is selected
+            document.getElementById('reason').addEventListener('change', function() {
+                if (this.value) {
+                    this.classList.remove('invalid');
+                    document.getElementById('reasonError').classList.add('hidden');
+                }
+            });
+            
+            // Remove invalid class when datetime is selected
+            datetimeInput.addEventListener('change', function() {
+                if (this.value) {
+                    this.classList.remove('invalid');
+                    document.getElementById('datetimeError').classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
