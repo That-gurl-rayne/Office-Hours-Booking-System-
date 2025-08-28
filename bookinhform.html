@@ -1,0 +1,38 @@
+<div class="card" id="bookingForm">
+    <h2 class="card-title"><i class="fas fa-calendar-plus"></i> Book Appointment</h2>
+    
+    <div class="name-instruction">
+        <strong>Identification:</strong> Please use your full name as it appears on your university records.
+    </div>
+    
+    <form id="appointmentForm">
+        <!-- Full Name -->
+        <div class="form-group">
+            <label for="name" class="required">Full Name</label>
+            <input type="text" id="name" required placeholder="Enter your full name as registered">
+            <div class="error-message hidden" id="nameError">
+                <i class="fas fa-exclamation-circle"></i> Please enter your full name
+            </div>
+        </div>
+        
+        <!-- Department -->
+        <div class="form-group department-group">
+            <label for="department" class="required">Department</label>
+            <select id="department" required>
+                <option value="" disabled selected>-- Select Department --</option>
+                <option>Computer Science</option>
+                <option>Information Technology</option>
+                <option>Software Engineering</option>
+                <option>Cybersecurity</option>
+                <option>Data Science</option>
+            </select>
+            <i class="fas fa-chevron-down department-icon"></i>
+            <div class="error-message hidden" id="departmentError">
+                <i class="fas fa-exclamation-circle"></i> Please select your department
+            </div>
+        </div>
+
+        <!-- Other fields and button -->
+        <!-- Copy everything from original code until the closing form tag -->
+    </form>
+</div>
